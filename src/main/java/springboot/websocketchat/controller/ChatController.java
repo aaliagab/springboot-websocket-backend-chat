@@ -17,12 +17,19 @@ public class ChatController {
 	@MessageMapping("/mensaje")
 	@SendTo("/chat/mensaje")
 	public Mensaje recibeMensaje(Mensaje mensaje) {
-		mensaje.setFecha(new Date().getTime());
-		mensaje.setColor(colores[(int)(Math.random()*12)]);
+		mensaje.setFecha(new Date().getTime());		
 		if(mensaje.getTipo().equals("MENSAJE"))
 			mensaje.setTexto(mensaje.getTexto());
-		else if(mensaje.getTipo().equals("NUEVO_USUARIO"))
+		else if(mensaje.getTipo().equals("NUEVO_USUARIO")) {
+			mensaje.setColor(colores[(int)(Math.random()*12)]);
 			mensaje.setTexto("El usuario "+mensaje.getUsername().toUpperCase()+" se ha conectado");
+		}			
 		return mensaje;
+	}
+	
+	@MessageMapping("/escribiendo")
+	@SendTo("/chat/escribiendo")
+	public String escribiendoMensaje(String username) {
+		return username.concat(" está escribiendo...");
 	}
 }
